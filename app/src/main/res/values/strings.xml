@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Slider</string>
+    <string name="message">Boot completed</string>
+    <string name="messageCharg">Charging</string>
 </resources>
