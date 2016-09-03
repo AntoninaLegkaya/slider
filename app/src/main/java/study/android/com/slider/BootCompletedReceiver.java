@@ -30,7 +30,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         boolean usbCharge = chargePlugType == BatteryManager.BATTERY_PLUGGED_USB;
         boolean acCharge = chargePlugType == BatteryManager.BATTERY_PLUGGED_AC;
 
-        Intent intent1 = new Intent(context, MainActivity.class);
+        Intent intent1 = new Intent(context, FlipActivity.class);
         intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             Toast toast = Toast.makeText(context.getApplicationContext(),
