@@ -40,6 +40,28 @@ public class BitmapUtilit {
 
     }
 
+
+    public static ArrayList<File> getImageFilePath(File directoryName) throws FileNotFoundException {
+        ArrayList<File> files = new ArrayList<File>();
+        File[] fList = directoryName.listFiles();
+        for (File file : fList) {
+            final String name = file.getName();
+            if (file.isFile()) {
+
+                String mimeType = MimeTypeMap.getFileExtensionFromUrl(file.getPath().toString());
+                Log.i(TAG, "mimeType: " + mimeType);
+                if (mimeType.equals("jpg") || mimeType.equals("png")) {
+                    Log.i(TAG, "Added File: " + name);
+                    files.add(file);
+                }
+            } else if (file.isDirectory()) {
+                listf(file, files);
+            }
+        }
+        return files;
+    }
+
+
     public static String getSDcardAbsolutePath() {
         return Environment.getExternalStorageDirectory().getAbsolutePath();
     }

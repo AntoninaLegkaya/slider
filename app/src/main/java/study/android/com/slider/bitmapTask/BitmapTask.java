@@ -17,19 +17,21 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import study.android.com.slider.FlipActivity;
 import study.android.com.slider.R;
 import study.android.com.slider.utilits.BitmapUtilit;
 
 /**
  * Created by tony on 02.09.16.
  */
-public class BitmapTask extends AsyncTask<Void, Void, ArrayList<Bitmap>> {
+public class BitmapTask extends AsyncTask<Void, Void, Bitmap> {
     static String TAG = "BitmapTask";
     private Context context;
     private ImageView mImageView;
     private ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
-    ViewFlipper flipper;
-    ArrayList<File> files = new ArrayList<File>();
+    private ViewFlipper flipper;
+    private ArrayList<File> files = new ArrayList<File>();
+    private File bitmapPath;
 
     final File path = BitmapUtilit.getSDcardPath();
 
@@ -39,57 +41,111 @@ public class BitmapTask extends AsyncTask<Void, Void, ArrayList<Bitmap>> {
         this.flipper = flipper;
     }
 
+    public BitmapTask(Context context, ViewFlipper flipper, File bitmapPath) {
+
+        this.context = context;
+        this.flipper = flipper;
+        this.bitmapPath = bitmapPath;
+    }
+
+//    @Override
+//    protected ArrayList<Bitmap> doInBackground(Void... voids) {
+//
+//        try {
+//            BitmapUtilit.listf(path, files);
+//        } catch (FileNotFoundException e) {
+//            Log.e(TAG, "Coud not get file paths!");
+//        }
+//
+//        if (!files.isEmpty()) {
+//
+//            for (File file
+//                    : files) {
+//                FileInputStream fis = null;
+//                try {
+//                    fis = new FileInputStream(file);
+//                } catch (FileNotFoundException e) {
+//                    Log.e(TAG, "Coudn't get bitmap from storage!");
+//                    e.printStackTrace();
+//                }
+//                BufferedInputStream bis = new BufferedInputStream(fis);
+//                Bitmap img = BitmapFactory.decodeStream(bis);
+//                bitmaps.add(img);
+//
+//            }
+//            return bitmaps;
+//
+//
+//        } else {
+//            Log.i(TAG, "Bitmaps gallery is empty!");
+//        }
+//
+//        return null;
+//    }
+
+//    @Override
+//    protected void onPostExecute(ArrayList<Bitmap> bitmaps) {
+//
+//        if (!bitmaps.isEmpty()) {
+//
+//            for (Bitmap bitmap : bitmaps) {
+//                mImageView = new ImageView(context);
+//                mImageView.setImageBitmap(bitmap);
+//                if (mImageView != null) {
+//                    Log.i(TAG, "Added Bitmap from gallery!");
+//                    flipper.addView(mImageView);
+//                }
+//
+//            }
+//
+//
+//        } else {
+//            Toast.makeText(context, "Images didn't add to slider. Gallery is empty!", Toast.LENGTH_SHORT).show();
+//
+//            Log.i(TAG, "Images didn't add to slider. Gallery is empty!");
+//        }
+//
+//
+//    }
+
+
     @Override
-    protected ArrayList<Bitmap> doInBackground(Void... voids) {
+    protected Bitmap doInBackground(Void... voids) {
 
-        try {
-            BitmapUtilit.listf(path, files);
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "Coud not get file paths!");
-        }
 
-        if (!files.isEmpty()) {
-
-            for (File file
-                    : files) {
-                FileInputStream fis = null;
-                try {
-                    fis = new FileInputStream(file);
-                } catch (FileNotFoundException e) {
-                    Log.e(TAG, "Coudn't get bitmap from storage!");
-                    e.printStackTrace();
-                }
-                BufferedInputStream bis = new BufferedInputStream(fis);
-                Bitmap img = BitmapFactory.decodeStream(bis);
-                bitmaps.add(img);
-
+        if (bitmapPath != null) {
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(bitmapPath);
+            } catch (FileNotFoundException e) {
+                Log.e(TAG, "Couldn't get bitmap from storage!");
+                e.printStackTrace();
             }
-            return bitmaps;
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            Bitmap img = BitmapFactory.decodeStream(bis);
+
+            return img;
 
 
-        } else {
-            Log.i(TAG, "Bitmaps gallery is empty!");
+        } else
+
+        {
+            Log.i(TAG, "Bitmap is empty!");
         }
 
         return null;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Bitmap> bitmaps) {
+    protected void onPostExecute(Bitmap bitmap) {
 
-        if (!bitmaps.isEmpty()) {
-
-            for (Bitmap bitmap : bitmaps) {
-                mImageView = new ImageView(context);
-                mImageView.setImageBitmap(bitmap);
-                if (mImageView != null) {
-                    Log.i(TAG, "Added Bitmap from gallery!");
-                    flipper.addView(mImageView);
-                }
-
+        if (bitmap != null) {
+            mImageView = new ImageView(context);
+            mImageView.setImageBitmap(bitmap);
+            if (mImageView != null) {
+                Log.i(TAG, "Added Bitmap from gallery!");
+                flipper.addView(mImageView);
             }
-
-
         } else {
             Toast.makeText(context, "Images didn't add to slider. Gallery is empty!", Toast.LENGTH_SHORT).show();
 
@@ -98,4 +154,6 @@ public class BitmapTask extends AsyncTask<Void, Void, ArrayList<Bitmap>> {
 
 
     }
+
+
 }

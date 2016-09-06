@@ -1,4 +1,4 @@
-package study.android.com.slider;
+package study.android.com.slider.receiver;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
@@ -11,6 +11,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
+
+import study.android.com.slider.FlipActivity;
+import study.android.com.slider.R;
 
 /**
  * Created by tony on 27.08.16.
